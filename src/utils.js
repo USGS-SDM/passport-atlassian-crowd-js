@@ -24,12 +24,14 @@ export function getCredentials(req) {
 		const [username, password] = Buffer.from(encoded, 'base64').toString().split(/:(.*)/);
 		return {username, password};
 	}
-	else if (req.body.username) {
-		console.info(req.body)
+	else if (req.body.username && req.body.password) {
+		const username = req.body.username;
+		const password = req.body.password;
+		return {username, password};
 	}
-	else {
-		throw new ApiError();
-	}
+
+	throw new ApiError();
+
 }
 
 export function getRemoteAddress(req) {
