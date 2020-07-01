@@ -23,8 +23,12 @@ export function getCredentials(req) {
 		const [username, password] = Buffer.from(encoded, 'base64').toString().split(/:(.*)/);
 		return {username, password};
 	}
-
-	throw new ApiError();
+	else if (req.body.username) {
+		console.info(req.body)
+	}
+	else {
+		throw new ApiError();
+	}
 }
 
 export function getRemoteAddress(req) {
