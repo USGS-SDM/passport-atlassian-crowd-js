@@ -27,8 +27,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 *
 */
 function getCredentials(req) {
-  console.info(req);
-
   if (req.headers.authorization) {
     const encoded = req.headers.authorization.replace(/^Basic /, '');
     const [username, password] = Buffer.from(encoded, 'base64').toString().split(/:(.*)/);

@@ -18,7 +18,6 @@
 import ApiError from './error';
 
 export function getCredentials(req) {
-	console.info(req)
 	if (req.headers.authorization) {
 		const encoded = req.headers.authorization.replace(/^Basic /, '');
 		const [username, password] = Buffer.from(encoded, 'base64').toString().split(/:(.*)/);
