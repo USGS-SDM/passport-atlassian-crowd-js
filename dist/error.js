@@ -1,3 +1,10 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
 /**
 *
 * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -14,26 +21,7 @@
 * for the JavaScript code in this file.
 *
 */
+class _default extends Error {}
 
-import ApiError from './error';
-
-export function getCredentials(req) {
-	if (req.headers.authorization) {
-		const encoded = req.headers.authorization.replace(/^Basic /, '');
-		const [username, password] = Buffer.from(encoded, 'base64').toString().split(/:(.*)/);
-		return {username, password};
-	}
-	else if (req.body.username && req.body.password) {
-		const username = req.body.username;
-		const password = req.body.password;
-		return {username, password};
-	}
-
-	throw new ApiError();
-
-}
-
-export function getRemoteAddress(req) {
-	/* istanbul ignore next: chai-passport request doesn't provide socket */
-	return req.socket ? req.socket.remoteAddress : undefined;
-}
+exports.default = _default;
+//# sourceMappingURL=error.js.map

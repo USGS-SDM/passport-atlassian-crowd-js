@@ -1,3 +1,20 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _passportStrategy = _interopRequireDefault(require("passport-strategy"));
+
+var _utils = require("../utils");
+
+var _error = _interopRequireDefault(require("../error"));
+
+var _crowd = _interopRequireDefault(require("../crowd"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /**
 *
 * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -14,26 +31,47 @@
 * for the JavaScript code in this file.
 *
 */
+class _default extends _passportStrategy.default {
+  constructor({
+    url,
+    appName,
+    appPassword
+  }) {
+    super();
+    this.name = 'atlassian-crowd-bearer-credentials';
+    this._crowdClient = (0, _crowd.default)({
+      url,
+      appName,
+      appPassword
+    });
+  }
 
-import ApiError from './error';
+  async authenticate(req) {
+    const self = this;
 
-export function getCredentials(req) {
-	if (req.headers.authorization) {
-		const encoded = req.headers.authorization.replace(/^Basic /, '');
-		const [username, password] = Buffer.from(encoded, 'base64').toString().split(/:(.*)/);
-		return {username, password};
-	}
-	else if (req.body.username && req.body.password) {
-		const username = req.body.username;
-		const password = req.body.password;
-		return {username, password};
-	}
-
-	throw new ApiError();
+    try {
+      const {
+        username,
+        password
+      } = (0, _utils.getCredentials)(req);
+      const {
+        token
+      } = await self._crowdClient.validateCredentials({
+        username,
+        password,
+        remoteAddress: (0, _utils.getRemoteAddress)(req)
+      });
+      this.success(token);
+    } catch (err) {
+      if (err instanceof _error.default) {
+        this.fail();
+      } else {
+        this.error(err);
+      }
+    }
+  }
 
 }
 
-export function getRemoteAddress(req) {
-	/* istanbul ignore next: chai-passport request doesn't provide socket */
-	return req.socket ? req.socket.remoteAddress : undefined;
-}
+exports.default = _default;
+//# sourceMappingURL=bearer-credentials.js.map
