@@ -84,22 +84,23 @@ class _default extends _passportStrategy.default {
       }
     }
 
-		function getToken() {
-			if (req.headers.cookie) {
-				var cookieArr = req.headers.cookie.split(';');
-		
-				for (var i = 0; i < cookieArr.length; i++) {
-					var cookiePair = cookieArr[i].split('=');
-		
-					if (self._ssoCookie === cookiePair[0].trim()) {
-						return cookiePair[1];
-					}
-				}
-		
-				return null;
-			}
-		}
+    function getToken() {
+      if (req.headers.cookie) {
+        var cookieArr = req.headers.cookie.split(';');
+
+        for (var i = 0; i < cookieArr.length; i++) {
+          var cookiePair = cookieArr[i].split('=');
+
+          if (self._ssoCookie === cookiePair[0].trim()) {
+            return cookiePair[1];
+          }
+        }
+
+        return null;
+      }
+    }
   }
+
 }
 
 exports.default = _default;
