@@ -97,6 +97,7 @@ class _default extends _passportStrategy.default {
         }
 
         return null;
+
       }
     }
   }
